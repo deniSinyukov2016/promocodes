@@ -16,7 +16,7 @@ class PromocodesServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/promocodes.php' => config_path('promocodes.php'),
+            __DIR__ . '/../config/promocodes.php' => config_path('promocodes.php'),
         ]);
 
         // $this->publishes([
@@ -31,17 +31,20 @@ class PromocodesServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Register config.
         $this->mergeConfigFrom(
-            __DIR__ . '/config/promocodes.php', 'promocodes'
+            __DIR__ . '/../config/promocodes.php', 'promocodes'
         );
 
-        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        // Register migrations.
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
         // Register factories.
-        $this->app->make(EloquentFactory::class)->load(__DIR__ . '/factories');
+        $this->app->make(EloquentFactory::class)->load(__DIR__ . '/../factories');
 
-        // $this->app->singleton('promocodes', function () {
-        //     return new Promocodes;
-        // });
+        // Register facade.
+        $this->app->singleton('promocodes', function ($app) {
+            return new Promocodes();
+        });
     }
 }
