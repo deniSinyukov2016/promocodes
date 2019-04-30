@@ -13,8 +13,18 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Itlead\\Promocodes\\": ""
+            "Itlead\\Promocodes\\": "src"
         }
 
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Itlead\\Promocodes\\PromocodesServiceProvider"
+            ],
+            "aliases": {
+                "Promocodes": "Itlead\\Promocodes\\Facades\\Promocodes"
+            }
+        }
     }
 }

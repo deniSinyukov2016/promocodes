@@ -3,6 +3,7 @@
 namespace Itlead\Promocodes;
 
 use Illuminate\Support\ServiceProvider;
+use Itlead\Promocodes\Promocodes;
 
 class PromocodesServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,10 @@ class PromocodesServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/promocodes.php' => config_path('promocodes.php'),
         ]);
+
+        $this->publishes([
+            __DIR__ . '/migrations' => database_path('migrations')
+        ], 'migrations');
     }
 
     /**
@@ -28,5 +33,11 @@ class PromocodesServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/config/promocodes.php', 'promocodes'
         );
+
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+
+        $this->app->singleton('promocodes', function () {
+            return new Promocodes;
+        });
     }
 }
