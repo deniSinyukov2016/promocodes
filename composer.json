@@ -1,0 +1,20 @@
+{
+    "name": "itlead/promocodes",
+    "description": "Promocode system",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Denis Sinyukov",
+            "email": "dnsinyukov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Itlead\\Promocodes\\": ""
+        }
+
+    }
+}
