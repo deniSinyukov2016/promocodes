@@ -16,12 +16,24 @@ class CreatePromocodesTable extends Migration
         Schema::create(config('promocodes.table', 'promocodes'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 32)->unique();
-            $table->enum('type', ['fixed', 'percent']);
+            $table->enum('type', ['fixed', 'percent'])->default('fixed');
             $table->double('reward', 10, 2)->nullable();
             $table->text('description')->nullable();
             $table->integer('quantity')->default(-1);
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
+        });
+
+        Schema::create(config('promocodes.relation_table', 'promocode_user'), function (Blueprint $table) {
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('promocode_id');
+            
+            $table->timestamps();
+
+            $table->primary(['user_id', 'promocode_id']);
+
+            $table->foreign('user_id')->references('id')->on(config('promocodes.users_table', 'users'));
+            $table->foreign('promocode_id')->references('id')->on(config('promocodes.table', 'promocodes'));
         });
     }
 
@@ -32,6 +44,7 @@ class CreatePromocodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promocodes');
+        Schema::dropIfExists(config('promocodes.relation_table', 'promocode_user'));
+        Schema::dropIfExists(config('promocodes.table', 'promocodes'));
     }
 }
