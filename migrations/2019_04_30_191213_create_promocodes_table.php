@@ -20,6 +20,7 @@ class CreatePromocodesTable extends Migration
             $table->double('reward', 10, 2)->nullable();
             $table->text('description')->nullable();
             $table->integer('quantity')->default(-1);
+            $table->boolean('is_supplement')->default(false);
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
