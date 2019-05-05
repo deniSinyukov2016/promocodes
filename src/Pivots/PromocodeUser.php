@@ -12,7 +12,7 @@ class PromocodeUser extends Pivot
 	 * @var bool
 	 */
 	public $incrementing = false;
-    protected $fillable  = ['user_id', 'promocode_id'];
+    protected $fillable  = ['user_id', 'promocode_id', 'promocode'];
 
     /**
      * PromocodeUser constructor.

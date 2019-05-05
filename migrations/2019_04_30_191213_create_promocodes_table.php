@@ -28,10 +28,12 @@ class CreatePromocodesTable extends Migration
         Schema::create(config('promocodes.relation_table', 'promocode_user'), function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('promocode_id');
-            
+            $table->string('promocode')->comment('entered promocode');
             $table->timestamps();
 
-            $table->primary(['user_id', 'promocode_id']);
+            if (config('promocodes.unique_for_user')) {
+                $table->primary(['user_id', 'promocode_id']);
+            }
 
             $table->foreign('user_id')->references('id')->on(config('promocodes.users_table', 'users'));
             $table->foreign('promocode_id')->references('id')->on(config('promocodes.table', 'promocodes'));

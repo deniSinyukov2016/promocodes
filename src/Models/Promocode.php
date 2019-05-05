@@ -11,6 +11,10 @@ class Promocode extends Model
     protected $guarded = ['id'];
 
     protected $dates   = ['expires_at'];
+
+    const FIXED   = 'fixed';
+    const PERCENT = 'percent';
+
   
     /**
      * Promocode constructor.
@@ -27,6 +31,7 @@ class Promocode extends Model
     {
         return $this->belongsToMany(config('promocodes.user_model', 'users'))
             ->using(PromocodeUser::class)
+            ->withPivot('promocode')
             ->withTimestamps();
     }
 

@@ -39,11 +39,12 @@ class Promocodes
      * Check promocode in database if it is valid.
      *
      * @param string $code
+     * @param boolean $single - check with exists code from user
      *
      * @return bool|Promocode
      * @throws InvalidPromocodeException
      */
-    public function check($code)
+    public function check($code, $single = false)
     {
         $promocode = Promocode::query()
         	->where('is_supplement', false)
@@ -58,7 +59,13 @@ class Promocodes
             throw new InvalidPromocodeException;
         }
 
-        if ($promocode->isExpired() || $promocode->users()->exists() || $promocode->quantity == 0) {
+        if ($single) {
+            if ($promocode->users()->exists()) {
+               return false; 
+            }
+        }
+
+        if ($promocode->isExpired() || $promocode->quantity == 0) {
             return false;
         }
 
@@ -122,7 +129,8 @@ class Promocodes
 	        if ($promocode = $this->check($code)) {
 
 	            $promocode->users()->attach(auth()->id(), [
-	                'promocode_id' => $promocode->id
+	                'promocode_id' => $promocode->id,
+                    'promocode'    => $code
 	            ]);
 
 	            if ($promocode->quantity > 0) {
@@ -131,7 +139,7 @@ class Promocodes
 
         		$promocode->save();
 
-	            return $promocode->refresh();
+	            return [$code, $promocode->refresh()];
 	        }
 	    } catch (InvalidPromocodeException $exception) {
            	return false;
